@@ -30,7 +30,8 @@ class StringFinder
 
         $search = null;
 
-        while ($string = $this->fileReader->getString() !== false) {
+        while (($string = $this->fileReader->getString()) !== false) {
+
             $column = $this->findColumn($string, $dto->getSearch());
 
             if ($column !== false) {
@@ -38,6 +39,7 @@ class StringFinder
                     $this->findLine(),
                     $column
                 );
+
                 break;
             }
         }
@@ -65,7 +67,13 @@ class StringFinder
      */
     protected function findColumn(string $haystack, string $needle)
     {
-        return mb_strpos($haystack, $needle);
+        $offset = mb_strpos($haystack, $needle);
+
+        if ($offset !== false) {
+            $offset++;
+        }
+
+        return $offset;
     }
 
 }
